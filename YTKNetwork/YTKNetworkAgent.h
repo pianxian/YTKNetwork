@@ -23,12 +23,18 @@
 
 #import <Foundation/Foundation.h>
 
+#if __has_include(<AFNetworking/AFHTTPSessionManager.h>)
+#import <AFNetworking/AFHTTPSessionManager.h>
+#else
+#import <AFNetworking/AFHTTPSessionManager.h>
+#endif
 NS_ASSUME_NONNULL_BEGIN
 
 @class YTKBaseRequest;
 
 ///  YTKNetworkAgent is the underlying class that handles actual request generation,
 ///  serialization and response handling.
+
 @interface YTKNetworkAgent : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -52,6 +58,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 ///  @return The result URL.
 - (NSString *)buildRequestUrl:(YTKBaseRequest *)request;
+
+@property (nonatomic,strong) AFHTTPSessionManager *manager;
 
 @end
 

@@ -41,6 +41,13 @@ typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *se
 - (NSString *)filterUrl:(NSString *)originUrl withRequest:(YTKBaseRequest *)request;
 @end
 
+@protocol AuthProtocol <NSObject>
+
+-(nullable NSString *)authToken;
+-(NSString *)authTimeStamp;
+
+@end
+
 ///  YTKCacheDirPathFilterProtocol can be used to append common path components when caching response results
 @protocol YTKCacheDirPathFilterProtocol <NSObject>
 ///  Preprocess cache path before actually saving them.
@@ -61,6 +68,9 @@ typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *se
 
 ///  Return a shared config object.
 + (YTKNetworkConfig *)sharedConfig;
+
+
+@property (nonatomic,weak) id<AuthProtocol> delegate;
 
 ///  Request base URL, such as "http://www.yuantiku.com". Default is empty string.
 @property (nonatomic, strong) NSString *baseUrl;

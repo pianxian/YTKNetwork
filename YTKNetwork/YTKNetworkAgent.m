@@ -23,14 +23,10 @@
 
 #import "YTKNetworkAgent.h"
 #import "YTKNetworkConfig.h"
-#import "YTKNetworkPrivate.h"
 #import <pthread/pthread.h>
+#import "YTKNetworkPrivate.h"
 
-#if __has_include(<AFNetworking/AFHTTPSessionManager.h>)
-#import <AFNetworking/AFHTTPSessionManager.h>
-#else
-#import <AFNetworking/AFHTTPSessionManager.h>
-#endif
+
 
 #define Lock() pthread_mutex_lock(&_lock)
 #define Unlock() pthread_mutex_unlock(&_lock)
@@ -140,7 +136,7 @@
 - (AFHTTPRequestSerializer *)requestSerializerForRequest:(YTKBaseRequest *)request {
     AFHTTPRequestSerializer *requestSerializer = nil;
     if (request.requestSerializerType == YTKRequestSerializerTypeHTTP) {
-        requestSerializer = [AFHTTPRequestSerializer serializer];
+        requestSerializer = _manager.requestSerializer;
     } else if (request.requestSerializerType == YTKRequestSerializerTypeJSON) {
         requestSerializer = [AFJSONRequestSerializer serializer];
     }

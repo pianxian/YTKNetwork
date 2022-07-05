@@ -20,7 +20,7 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+#include <CommonCrypto/CommonCrypto.h>
 #import "YTKBaseRequest.h"
 #import "YTKNetworkAgent.h"
 #import "YTKNetworkPrivate.h"
@@ -99,9 +99,26 @@ NSString *const YTKRequestValidationErrorDomain = @"com.yuantiku.request.validat
 }
 
 #pragma mark - Request Action
-
+- (NSString *)md5String:(NSString *)str {
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    NSData *data  = [str dataUsingEncoding:NSUTF8StringEncoding];
+    CC_MD5(data.bytes, (CC_LONG)data.length, result);
+    return [NSString stringWithFormat:
+            @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+            result[0], result[1], result[2], result[3],
+            result[4], result[5], result[6], result[7],
+            result[8], result[9], result[10], result[11],
+            result[12], result[13], result[14], result[15]
+            ];
+}
 - (void)start {
     [self toggleAccessoriesWillStartCallBack];
+    [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:YTKNetworkConfig.sharedConfig.delegate.authToken forHTTPHeaderField:@"token"];
+
+    NSString *secertParam = [self md5String:[[YTKNetworkConfig.sharedConfig.delegate.authToken ?YTKNetworkConfig.sharedConfig.delegate.authToken:@"" stringByAppendingString:@"&"] stringByAppendingString:YTKNetworkConfig.sharedConfig.delegate.authTimeStamp]];
+    [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:secertParam forHTTPHeaderField:@"auth"];
+
+    [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:YTKNetworkConfig.sharedConfig.delegate.authTimeStamp forHTTPHeaderField:@"time-stamp"];
     [[YTKNetworkAgent sharedAgent] addRequest:self];
 }
 

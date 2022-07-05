@@ -94,7 +94,7 @@ FOUNDATION_EXPORT void YTKLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2);
 
 @interface YTKNetworkAgent (Private)
 
-- (AFHTTPSessionManager *)manager;
+
 - (void)resetURLSessionManager;
 - (void)resetURLSessionManagerWithConfiguration:(NSURLSessionConfiguration *)configuration;
 
