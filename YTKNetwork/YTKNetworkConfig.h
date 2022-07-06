@@ -43,8 +43,20 @@ typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *se
 
 @protocol AuthProtocol <NSObject>
 
+/// 请求头带的token
 -(nullable NSString *)authToken;
+
+/// 时间戳
 -(NSString *)authTimeStamp;
+@optional
+
+/// 解密
+/// @param responseObject 服务器返回的内容
+-(nullable id)deEncry:(nullable id)responseObject;
+
+/// 计算时间差
+/// @param serviceTimeStr 服务端时间
+-(void)serviceTimeChange:(NSString *)serviceTimeStr;
 
 @end
 

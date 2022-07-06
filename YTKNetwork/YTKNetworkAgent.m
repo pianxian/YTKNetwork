@@ -350,8 +350,12 @@
 
     NSError *requestError = nil;
     BOOL succeed = NO;
-
     request.responseObject = responseObject;
+    if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(deEncry:)]) {
+        request.responseObject = [YTKNetworkConfig.sharedConfig.delegate deEncry:responseObject];
+        request.responseObject = request.responseObject;
+    }
+   
     if ([request.responseObject isKindOfClass:[NSData class]]) {
         request.responseData = responseObject;
         request.responseString = [[NSString alloc] initWithData:responseObject encoding:[YTKNetworkUtils stringEncodingWithRequest:request]];
@@ -361,6 +365,7 @@
                 // Default serializer. Do nothing.
                 break;
             case YTKResponseSerializerTypeJSON:
+
                 request.responseObject = [self.jsonResponseSerializer responseObjectForResponse:task.response data:request.responseData error:&serializationError];
                 request.responseJSONObject = request.responseObject;
                 break;
