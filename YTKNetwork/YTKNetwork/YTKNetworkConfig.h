@@ -48,6 +48,11 @@ typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *se
 
 /// 时间戳
 -(NSString *)authTimeStamp;
+
+/// rsa鉴权
+-(nullable NSString *)authRsaStr;
+
+
 @optional
 
 /// 解密
@@ -57,6 +62,10 @@ typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *se
 /// 计算时间差
 /// @param serviceTimeStr 服务端时间
 -(void)serviceTimeChange:(NSString *)serviceTimeStr;
+
+/// 请求失败回调 统一处理
+/// @param error error description
+-(void)requestDidFailWithRequest:(NSError *)error;
 
 @end
 
@@ -82,6 +91,7 @@ typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *se
 + (YTKNetworkConfig *)sharedConfig;
 
 
+///delegate
 @property (nonatomic,weak) id<AuthProtocol> delegate;
 
 ///  Request base URL, such as "http://www.yuantiku.com". Default is empty string.

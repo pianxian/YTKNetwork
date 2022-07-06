@@ -75,7 +75,10 @@ NSString *const YTKRequestValidationErrorDomain = @"com.yuantiku.request.validat
     }
     return self.requestTask.state == NSURLSessionTaskStateRunning;
 }
-
+/// 自身是否忽略处理error
+- (BOOL)executingHanderError{
+    return YES;
+}
 #pragma mark - Request Configuration
 
 - (void)setCompletionBlockWithSuccess:(YTKRequestCompletionBlock)success
@@ -119,6 +122,9 @@ NSString *const YTKRequestValidationErrorDomain = @"com.yuantiku.request.validat
     [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:secertParam forHTTPHeaderField:@"auth"];
 
     [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:YTKNetworkConfig.sharedConfig.delegate.authTimeStamp forHTTPHeaderField:@"time-stamp"];
+    if (YTKNetworkConfig.sharedConfig.delegate.authRsaStr) {
+        [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:YTKNetworkConfig.sharedConfig.delegate.authRsaStr forHTTPHeaderField:@"secret"];
+    }
     [[YTKNetworkAgent sharedAgent] addRequest:self];
 }
 

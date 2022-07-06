@@ -449,6 +449,11 @@
         [request toggleAccessoriesWillStopCallBack];
         [request requestFailedFilter];
 
+        if ([request executingHanderError]) {
+            if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(requestDidFailWithRequest:)]) {
+                [YTKNetworkConfig.sharedConfig.delegate requestDidFailWithRequest:error];
+            }
+        }
         if (request.delegate != nil) {
             [request.delegate requestFailed:request];
         }
