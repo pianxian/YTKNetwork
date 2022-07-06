@@ -125,6 +125,17 @@ NSString *const YTKRequestValidationErrorDomain = @"com.yuantiku.request.validat
     if (YTKNetworkConfig.sharedConfig.delegate.authRsaStr) {
         [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:YTKNetworkConfig.sharedConfig.delegate.authRsaStr forHTTPHeaderField:@"secret"];
     }
+    if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(requestParams)]) {
+        NSArray <NSString *>*keys = YTKNetworkConfig.sharedConfig.delegate.requestParams.allKeys;
+
+        if (keys && keys.count) {
+            NSArray *vaules = YTKNetworkConfig.sharedConfig.delegate.requestParams.allKeys;
+            [keys enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+                [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:vaules[idx] forHTTPHeaderField:keys[idx]];
+            }];
+        }
+    }
+
     [[YTKNetworkAgent sharedAgent] addRequest:self];
 }
 

@@ -53,7 +53,11 @@ typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *se
 -(nullable NSString *)authRsaStr;
 
 
+
 @optional
+
+/// 请求参数
+-(nullable NSDictionary <NSString *,NSString *>*)requestParams;
 
 /// 解密
 /// @param responseObject 服务器返回的内容
