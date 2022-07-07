@@ -75,10 +75,7 @@ NSString *const YTKRequestValidationErrorDomain = @"com.yuantiku.request.validat
     }
     return self.requestTask.state == NSURLSessionTaskStateRunning;
 }
-/// 自身是否忽略处理error
-- (BOOL)executingHanderError{
-    return YES;
-}
+
 #pragma mark - Request Configuration
 
 - (void)setCompletionBlockWithSuccess:(YTKRequestCompletionBlock)success
@@ -102,40 +99,8 @@ NSString *const YTKRequestValidationErrorDomain = @"com.yuantiku.request.validat
 }
 
 #pragma mark - Request Action
-- (NSString *)md5String:(NSString *)str {
-    unsigned char result[CC_MD5_DIGEST_LENGTH];
-    NSData *data  = [str dataUsingEncoding:NSUTF8StringEncoding];
-    CC_MD5(data.bytes, (CC_LONG)data.length, result);
-    return [NSString stringWithFormat:
-            @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
-            result[0], result[1], result[2], result[3],
-            result[4], result[5], result[6], result[7],
-            result[8], result[9], result[10], result[11],
-            result[12], result[13], result[14], result[15]
-            ];
-}
 - (void)start {
     [self toggleAccessoriesWillStartCallBack];
-    [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:YTKNetworkConfig.sharedConfig.delegate.authToken forHTTPHeaderField:@"token"];
-
-    NSString *secertParam = [self md5String:[[YTKNetworkConfig.sharedConfig.delegate.authToken ?YTKNetworkConfig.sharedConfig.delegate.authToken:@"" stringByAppendingString:@"&"] stringByAppendingString:YTKNetworkConfig.sharedConfig.delegate.authTimeStamp]];
-    [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:secertParam forHTTPHeaderField:@"auth"];
-
-    [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:YTKNetworkConfig.sharedConfig.delegate.authTimeStamp forHTTPHeaderField:@"time-stamp"];
-    if (YTKNetworkConfig.sharedConfig.delegate.authRsaStr) {
-        [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:YTKNetworkConfig.sharedConfig.delegate.authRsaStr forHTTPHeaderField:@"secret"];
-    }
-    if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(requestParams)]) {
-        NSArray <NSString *>*keys = YTKNetworkConfig.sharedConfig.delegate.requestParams.allKeys;
-
-        if (keys && keys.count) {
-            NSArray *vaules = YTKNetworkConfig.sharedConfig.delegate.requestParams.allKeys;
-            [keys enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-                [[YTKNetworkAgent sharedAgent].manager.requestSerializer setValue:vaules[idx] forHTTPHeaderField:keys[idx]];
-            }];
-        }
-    }
-
     [[YTKNetworkAgent sharedAgent] addRequest:self];
 }
 
@@ -225,7 +190,10 @@ NSString *const YTKRequestValidationErrorDomain = @"com.yuantiku.request.validat
 - (id)jsonValidator {
     return nil;
 }
-
+/// 自身是否忽略处理error
+- (BOOL)executingHanderError{
+    return YES;
+}
 - (BOOL)statusCodeValidator {
     NSInteger statusCode = [self responseStatusCode];
     return (statusCode >= 200 && statusCode <= 299);

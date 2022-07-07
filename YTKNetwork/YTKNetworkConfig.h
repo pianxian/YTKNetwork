@@ -43,21 +43,20 @@ typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *se
 
 @protocol AuthProtocol <NSObject>
 
-/// 请求头带的token
--(nullable NSString *)authToken;
-
-/// 时间戳
--(NSString *)authTimeStamp;
-
-/// rsa鉴权
--(nullable NSString *)authRsaStr;
+///// 请求头带的token
+//-(nullable NSString *)authToken;
+//
+///// 时间戳
+//-(NSString *)authTimeStamp;
+//
+///// rsa鉴权
+//-(nullable NSString *)authRsaStr;
 
 
 
 @optional
 
-/// 请求参数
--(nullable NSDictionary <NSString *,NSString *>*)requestParams;
+
 
 /// 解密
 /// @param responseObject 服务器返回的内容
