@@ -353,7 +353,7 @@
     request.responseObject = responseObject;
     if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(deEncry:)]) {
         request.responseObject = [YTKNetworkConfig.sharedConfig.delegate deEncry:responseObject];
-        request.responseObject = request.responseObject;
+        request.responseJSONObject = request.responseObject;
     }
    
     if ([request.responseObject isKindOfClass:[NSData class]]) {
