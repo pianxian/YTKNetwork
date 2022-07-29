@@ -450,8 +450,8 @@
         [request requestFailedFilter];
 
         if ([request executingHanderError]) {
-            if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(requestDidFailWithRequest:)]) {
-                [YTKNetworkConfig.sharedConfig.delegate requestDidFailWithRequest:error];
+            if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(requestDidFailed:withRequest:)]) {
+                [YTKNetworkConfig.sharedConfig.delegate requestDidFailed:error withRequest:request];
             }
         }
         if (request.delegate != nil) {

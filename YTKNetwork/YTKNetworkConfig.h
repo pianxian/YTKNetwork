@@ -68,7 +68,8 @@ typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *se
 
 /// 请求失败回调 统一处理
 /// @param error error description
--(void)requestDidFailWithRequest:(NSError *)error;
+/// @param request error description
+-(void)requestDidFailed:(NSError *)error withRequest:(YTKBaseRequest *)request;
 
 @end
 
