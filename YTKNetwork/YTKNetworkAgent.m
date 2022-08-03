@@ -348,11 +348,12 @@
     NSError * __autoreleasing serializationError = nil;
     NSError * __autoreleasing validationError = nil;
 
-    NSError *requestError = nil;
+   __block NSError *requestError = nil;
     BOOL succeed = NO;
     request.responseObject = responseObject;
-    if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(deEncry:)]) {
-        request.responseObject = [YTKNetworkConfig.sharedConfig.delegate deEncry:responseObject];
+    request.responseJSONObject = request.responseObject;
+    if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(deEncry:requestError:)]) {
+        request.responseObject = [YTKNetworkConfig.sharedConfig.delegate deEncry:responseObject requestError:&error];
         request.responseJSONObject = request.responseObject;
     }
    
