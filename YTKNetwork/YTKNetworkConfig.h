@@ -59,9 +59,10 @@ typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *se
 
 
 /// 解密
-/// @param responseObject 服务器返回的内容
+/// @param request request
 /// @param error  传递错误obj
--(nullable id)deEncry:(nullable id)responseObject requestError:(NSError *_Nullable __autoreleasing *)error;
+-(nullable id)deEncry:(YTKBaseRequest *)request
+         requestError:(NSError *_Nullable __autoreleasing *)error;
 
 /// 计算时间差
 /// @param serviceTimeStr 服务端时间
