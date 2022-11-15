@@ -357,6 +357,13 @@
         request.responseJSONObject = request.responseObject;
     }
    
+    //计算时间差 同步时间
+    if([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(serviceTimeChange:)]){
+        NSHTTPURLResponse *response = (NSHTTPURLResponse *)request.response;
+        NSString *dateStr = response.allHeaderFields[@"date"];
+        [YTKNetworkConfig.sharedConfig.delegate serviceTimeChange:dateStr];
+    }
+    
     if ([request.responseObject isKindOfClass:[NSData class]]) {
         request.responseData = responseObject;
         request.responseString = [[NSString alloc] initWithData:responseObject encoding:[YTKNetworkUtils stringEncodingWithRequest:request]];
