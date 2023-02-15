@@ -357,12 +357,7 @@
         request.responseJSONObject = request.responseObject;
     }
    
-    //计算时间差 同步时间
-    if([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(serviceTimeChange:)]){
-        NSHTTPURLResponse *response = (NSHTTPURLResponse *)request.response;
-        NSString *dateStr = response.allHeaderFields[@"date"];
-        [YTKNetworkConfig.sharedConfig.delegate serviceTimeChange:dateStr];
-    }
+
     
     if ([request.responseObject isKindOfClass:[NSData class]]) {
         request.responseData = responseObject;
@@ -412,7 +407,12 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [request toggleAccessoriesWillStopCallBack];
         [request requestCompleteFilter];
-
+        //计算时间差 同步时间
+        if([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(serviceTimeChange:)]){
+            NSHTTPURLResponse *response = (NSHTTPURLResponse *)request.response;
+            NSString *dateStr = response.allHeaderFields[@"date"];
+            [YTKNetworkConfig.sharedConfig.delegate serviceTimeChange:dateStr];
+        }
         if (request.delegate != nil) {
             [request.delegate requestFinished:request];
         }
