@@ -457,15 +457,16 @@
         [request toggleAccessoriesWillStopCallBack];
         [request requestFailedFilter];
 
-        if ([request executingHanderError]) {
-            if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(requestDidFailed:withRequest:)]) {
-                [YTKNetworkConfig.sharedConfig.delegate requestDidFailed:error withRequest:request];
-            }
-        }
+
         if (request.delegate != nil) {
             [request.delegate requestFailed:request];
         }
         if (request.failureCompletionBlock) {
+            if ([request executingHanderError]) {
+                if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(requestDidFailed:withRequest:)]) {
+                    [YTKNetworkConfig.sharedConfig.delegate requestDidFailed:error withRequest:request];
+                }
+            }
             request.failureCompletionBlock(request);
         }
         [request toggleAccessoriesDidStopCallBack];
