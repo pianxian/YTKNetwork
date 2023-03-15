@@ -462,12 +462,13 @@
             [request.delegate requestFailed:request];
         }
         if (request.failureCompletionBlock) {
+
+            request.failureCompletionBlock(request);
             if ([request executingHanderError]) {
                 if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(requestDidFailed:withRequest:)]) {
                     [YTKNetworkConfig.sharedConfig.delegate requestDidFailed:error withRequest:request];
                 }
             }
-            request.failureCompletionBlock(request);
         }
         [request toggleAccessoriesDidStopCallBack];
     });
