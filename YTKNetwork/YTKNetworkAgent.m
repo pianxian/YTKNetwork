@@ -357,7 +357,7 @@
         request.responseObject = [YTKNetworkConfig.sharedConfig.delegate deEncry:request requestError:&error];
         request.responseJSONObject = request.responseObject;
     }
-    if(request.cacheTimeInSeconds >0 && !request.ignoreCache){
+    if([request cacheTimeInSeconds] >0 && !request.ignoreCache){
         request.responseData = [request.responseJSONObject yy_modelToJSONData];
     }
     if ([request.responseObject isKindOfClass:[NSData class]]) {

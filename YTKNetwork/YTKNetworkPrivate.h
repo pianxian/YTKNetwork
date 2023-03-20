@@ -65,7 +65,8 @@ FOUNDATION_EXPORT void YTKLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2);
 @property (nonatomic, strong, readwrite, nullable) id responseObject;
 @property (nonatomic, strong, readwrite, nullable) NSString *responseString;
 @property (nonatomic, strong, readwrite, nullable) NSError *error;
-
+- (NSInteger)cacheTimeInSeconds;
+@property (nonatomic,readwrite,assign) BOOL ignoreCache;
 @end
 
 @interface YTKBaseRequest (RequestAccessory)

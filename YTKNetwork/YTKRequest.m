@@ -153,6 +153,9 @@ static dispatch_queue_t ytkrequest_cache_writing_queue() {
 }
 
 #pragma mark - Subclass Override
+-(BOOL)ignoreCache{
+    return _ignoreCache;
+}
 
 - (NSInteger)cacheTimeInSeconds {
     return -1;
