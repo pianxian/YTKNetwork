@@ -24,5 +24,7 @@ Pod::Spec.new do |s|
   s.tvos.deployment_target = "9.0"
   s.framework = "CFNetwork"
 
-  s.dependency "AFNetworking/NSURLSession", "~> 4.0"
+  s.dependency "AFNetworking/NSURLSession", "~> 4.0.1"
+  s.dependency "YYModel", "~> 1.0.4"
+
 end

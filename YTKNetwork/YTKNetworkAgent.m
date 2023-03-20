@@ -26,8 +26,9 @@
 #import <pthread/pthread.h>
 #import "YTKNetworkPrivate.h"
 
-
-
+#if __has_include("YYModel/YYModel.h")
+@import YYModel;
+#endif
 #define Lock() pthread_mutex_lock(&_lock)
 #define Unlock() pthread_mutex_unlock(&_lock)
 
@@ -356,7 +357,7 @@
         request.responseObject = [YTKNetworkConfig.sharedConfig.delegate deEncry:request requestError:&error];
         request.responseJSONObject = request.responseObject;
     }
-   
+    request.responseData = request.responseJSONObject.yy_modelToJSONData;
 
     
     if ([request.responseObject isKindOfClass:[NSData class]]) {
@@ -464,10 +465,11 @@
         if (request.failureCompletionBlock) {
 
             request.failureCompletionBlock(request);
-            if ([request executingHanderError]) {
-                if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(requestDidFailed:withRequest:)]) {
-                    [YTKNetworkConfig.sharedConfig.delegate requestDidFailed:error withRequest:request];
-                }
+
+        }
+        if(request.failureCompletionBlock != nil && request != nil && [request executingHanderError]){
+            if ([YTKNetworkConfig.sharedConfig.delegate respondsToSelector:@selector(requestDidFailed:withRequest:)]) {
+                [YTKNetworkConfig.sharedConfig.delegate requestDidFailed:error withRequest:request];
             }
         }
         [request toggleAccessoriesDidStopCallBack];
